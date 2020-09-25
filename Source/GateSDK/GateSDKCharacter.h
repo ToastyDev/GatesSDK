@@ -45,6 +45,8 @@ class AGateSDKCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UMotionControllerComponent* L_MotionController;
 
+
+
 public:
 	AGateSDKCharacter();
 
@@ -80,6 +82,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	uint32 bUsingMotionControllers : 1;
 
+private:
+	FVector LeftPortalLocation;
+	FVector RightPortalLocation;
+	FRotator LeftPortalRotation;
+	FRotator RightPortalRotation;
+
 protected:
 	
 	/** Fires a projectile. */
@@ -105,6 +113,14 @@ protected:
 	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
 	 */
 	void LookUpAtRate(float Rate);
+
+	void SpawnLeftPortal();
+	void SpawnRightPortal();
+	void DestroyLeftPortal();
+	void DestroyRightPortal();
+	void StorePlayerVelocity();
+	void LeftPortalCollisionCheck();
+	void RightPortalCollisionCheck();
 
 	struct TouchData
 	{
