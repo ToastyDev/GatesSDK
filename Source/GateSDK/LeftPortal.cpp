@@ -9,7 +9,12 @@ ALeftPortal::ALeftPortal()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+
+	Plane->SetupAttachment(RootComponent);
+	SceneCapture->SetupAttachment(RootComponent);
+	Box->SetupAttachment(RootComponent);
+	Arrow->SetupAttachment(RootComponent);
 
 }
 
@@ -27,3 +32,27 @@ void ALeftPortal::Tick(float DeltaTime)
 
 }
 
+void ALeftPortal::SetplayerVelocity()
+{
+
+}
+
+void ALeftPortal::SetPlayerRotation()
+{
+}
+
+void ALeftPortal::ResetMaxVelocity()
+{
+}
+
+void ALeftPortal::SetVelocityAccordingToForwardVector()
+{
+}
+
+void ALeftPortal::SetPortalLocationOnCall()
+{
+}
+
+void ALeftPortal::SetRenderTargetLocation()
+{
+}

@@ -19,27 +19,66 @@ public:
 	// Sets default values for this actor's properties
 	ALeftPortal();
 
+	UPROPERTY(VisibleAnywhere)
 	USceneComponent* RootComponent;
-	UStaticMesh Plane;
-	USceneCaptureComponent2D SceneCapture;
-	UBoxComponent Box;
-	UArrowComponent Arrow;
+
+	UPROPERTY(VisibleAnywhere)
+	UStaticMesh* Plane;
+
+	UPROPERTY(VisibleAnywhere)
+	USceneCaptureComponent2D* SceneCapture;
+	
+	UPROPERTY(VisibleAnywhere)
+	UBoxComponent* Box;
+
+	UPROPERTY(VisibleAnywhere)
+	UArrowComponent* Arrow;
 
 private:
+
+	UPROPERTY(VisibleAnywhere)
 	bool IsSecondPortalSpawned;
+	
+	UPROPERTY(VisibleAnywhere)
 	bool IsPlayer;
+	
+	UPROPERTY(VisibleAnywhere)
 	bool FirstRun;
+	
+	UPROPERTY(VisibleAnywhere)
 	int32 VelocityAddition;
+	
+	UPROPERTY(VisibleAnywhere)
 	int32 SetIndex;
+
+	UPROPERTY(VisibleAnywhere)
 	int32 VelocityAdditionZVector;
+	
+	UPROPERTY(VisibleAnywhere)
 	FVector LeftPortalForwardVector;
+	
+	UPROPERTY(VisibleAnywhere)
 	FVector RightPortalForwardVector;
+	
+	UPROPERTY(VisibleAnywhere)
 	FVector OriginalCollisionLocation;
+	
+	UPROPERTY(VisibleAnywhere)
 	FVector RandomCollisionLocation;
+	
+	UPROPERTY(VisibleAnywhere)
 	FRotator LeftPortalRotation;
+	
+	UPROPERTY(VisibleAnywhere)
 	FRotator RightPortalRotation;
+	
+	UPROPERTY(VisibleAnywhere)
 	FRotator PlayerRotation;
+	
+	UPROPERTY(VisibleAnywhere)
 	APlayerController* PlayerController;
+	
+	UPROPERTY(VisibleAnywhere)
 	AActor* CharacterRef;
 
 protected:
@@ -50,10 +89,21 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION()
 	void SetplayerVelocity();
+
+	UFUNCTION()
 	void SetPlayerRotation();
+
+	UFUNCTION()
 	void ResetMaxVelocity();
+
+	UFUNCTION()
 	void SetVelocityAccordingToForwardVector();
+	
+	UFUNCTION()
 	void SetPortalLocationOnCall();
+	
+	UFUNCTION()
 	void SetRenderTargetLocation();
 };
