@@ -23,7 +23,7 @@ public:
 	USceneComponent* RootComponent;
 
 	UPROPERTY(VisibleAnywhere)
-	UStaticMesh* Plane;
+	UStaticMeshComponent* Plane;
 
 	UPROPERTY(VisibleAnywhere)
 	USceneCaptureComponent2D* SceneCapture;

@@ -12,9 +12,22 @@ ALeftPortal::ALeftPortal()
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
 	Plane->SetupAttachment(RootComponent);
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> PlaneAsset(TEXT(""));
+	if (PlaneAsset.Succeeded())
+	{
+		Plane->SetStaticMesh(PlaneAsset.Object);
+		Plane->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
+		Plane->SetRelativeRotation();
+		Plane->SetWorldScale3D(FVector(0.f));
+	}
+
 	SceneCapture->SetupAttachment(RootComponent);
+
 	Box->SetupAttachment(RootComponent);
+	Box->SetRelativeLocation(FVector(10.f, 0.f, 0.f));
+
 	Arrow->SetupAttachment(RootComponent);
+	Arrow->SetRelativeLocation(FVector(10.f, 0.f, 0.f));
 
 }
 
