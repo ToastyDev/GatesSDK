@@ -8,6 +8,7 @@
 #include "Components/SceneCaptureComponent2D.h"
 #include "Components/BoxComponent.h"
 #include "Components/ArrowComponent.h"
+#include "Engine/TextureRenderTarget2D.h"
 #include "LeftPortal.generated.h"
 
 UCLASS()
@@ -19,8 +20,8 @@ public:
 	// Sets default values for this actor's properties
 	ALeftPortal();
 
-	UPROPERTY(VisibleAnywhere)
-	USceneComponent* RootComponent;
+	//UPROPERTY(VisibleAnywhere)
+	//USceneComponent* RootComponent;
 
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* Plane;
@@ -80,6 +81,9 @@ private:
 	
 	UPROPERTY(VisibleAnywhere)
 	AActor* CharacterRef;
+
+	UPROPERTY(VisibleAnywhere)
+	UTextureRenderTarget2D* RenderTarget;
 
 protected:
 	// Called when the game starts or when spawned

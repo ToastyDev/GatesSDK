@@ -85,6 +85,10 @@ void AGateSDKCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
+	// Bind Portal Actions
+	PlayerInputComponent->BindAction("Spawn Left Portal", IE_Pressed, this, &AGateSDKCharacter::SpawnLeftPortal);
+	PlayerInputComponent->BindAction("Spawn Right Portal", IE_Pressed, this, &AGateSDKCharacter::SpawnRightPortal);
+
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AGateSDKCharacter::OnFire);
 
@@ -170,3 +174,12 @@ void AGateSDKCharacter::LookUpAtRate(float Rate)
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
+void AGateSDKCharacter::SpawnLeftPortal()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Blue, TEXT("Left Portal Pressed"));
+}
+
+void AGateSDKCharacter::SpawnRightPortal()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Orange, TEXT("Right Portal Pressed"));
+}

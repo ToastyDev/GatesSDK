@@ -9,10 +9,12 @@ ALeftPortal::ALeftPortal()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	//RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
-	Plane->SetupAttachment(RootComponent);
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> PlaneAsset(TEXT("/Content/StarterContent/Shapes/Shape_Plane.uasset"));
+	//Plane->SetupAttachment(RootComponent);
+	Plane = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Plane"));
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> PlaneAsset(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Plane.Shape_Plane'"));
 	if (PlaneAsset.Succeeded())
 	{
 		Plane->SetStaticMesh(PlaneAsset.Object);
@@ -22,14 +24,17 @@ ALeftPortal::ALeftPortal()
 		Plane->SetWorldScale3D(FVector(1.25f, 2.25f, 0.f));
 	}
 
-	SceneCapture->SetupAttachment(RootComponent);
+	SceneCapture = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("Scene Capture"));
+	SceneCapture->SetupAttachment(Plane);
 	SceneCapture->SetRelativeLocation(FVector(10.f, 0.f, 0.f));
 
-	Box->SetupAttachment(RootComponent);
+	Box = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
+	Box->SetupAttachment(Plane);
 	Box->SetRelativeLocation(FVector(10.f, 0.f, 0.f));
 	Box->SetWorldScale3D(FVector(0.25f, 1.5f, 3.25f));
 
-	Arrow->SetupAttachment(RootComponent);
+	Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
+	Arrow->SetupAttachment(Plane);
 	Arrow->SetRelativeLocation(FVector(10.f, 0.f, 0.f));
 
 }
