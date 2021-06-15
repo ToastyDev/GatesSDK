@@ -10,6 +10,8 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
+
+#include "DrawDebugHelpers.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
@@ -176,7 +178,35 @@ void AGateSDKCharacter::LookUpAtRate(float Rate)
 
 void AGateSDKCharacter::SpawnLeftPortal()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Blue, TEXT("Left Portal Pressed"));
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("Left Portal Pressed"));
+
+	FVector CameraLocation = FirstPersonCameraComponent->GetComponentLocation();
+	FRotator CameraRotation = FirstPersonCameraComponent->GetComponentRotation();
+
+	FVector TraceEndPoint = CameraLocation + (CameraRotation.Vector() * 10000.0f);
+
+	FCollisionQueryParams TraceParams(FName(TEXT("InteractTrace")), true, NULL);
+	TraceParams.bTraceComplex = true;
+	TraceParams.bReturnPhysicalMaterial = true;
+	TraceParams.AddIgnoredActor(this);
+
+	FHitResult HitDetails = FHitResult(ForceInit);
+
+	bool bHasHit = GetWorld()->LineTraceSingleByChannel(HitDetails, CameraLocation, TraceEndPoint, ECC_GameTraceChannel3, TraceParams);
+	if (bHasHit)
+	{
+		DrawDebugLine(GetWorld(), CameraLocation, HitDetails.ImpactPoint, FColor::Green, false, 5.f, ECC_WorldStatic, 1.f);
+		DrawDebugBox(GetWorld(), HitDetails.ImpactPoint, FVector(2.f, 2.f, 2.f), FColor::Blue, false, 5.f, ECC_WorldStatic, 1.f);
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("Left Portal Hit"));
+		//UWorld::SpawnActor(&ALeftPortal, "LeftPortal", HitDetails.ImpactPoint, HitDetails.ImpactNormal);
+	}
+	else
+	{
+		DrawDebugLine(GetWorld(), CameraLocation, TraceEndPoint, FColor::Red, false, 5.f, ECC_WorldStatic, 1.f);
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("Left Portal Missed"));
+	}
+
+	
 }
 
 void AGateSDKCharacter::SpawnRightPortal()
