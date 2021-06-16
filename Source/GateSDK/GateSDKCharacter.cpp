@@ -89,7 +89,10 @@ void AGateSDKCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 
 	// Bind Portal Actions
 	PlayerInputComponent->BindAction("Spawn Left Portal", IE_Pressed, this, &AGateSDKCharacter::SpawnLeftPortal);
+	PlayerInputComponent->BindAction("Destroy Left Portal", IE_Pressed, this, &AGateSDKCharacter::DestroyLeftPortal);
 	PlayerInputComponent->BindAction("Spawn Right Portal", IE_Pressed, this, &AGateSDKCharacter::SpawnRightPortal);
+	PlayerInputComponent->BindAction("Destroy Right Portal", IE_Pressed, this, &AGateSDKCharacter::DestroyRightPortal);
+	
 
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AGateSDKCharacter::OnFire);
@@ -199,6 +202,7 @@ void AGateSDKCharacter::SpawnLeftPortal()
 		DrawDebugBox(GetWorld(), HitDetails.ImpactPoint, FVector(2.f, 2.f, 2.f), FColor::Blue, false, 5.f, ECC_WorldStatic, 1.f);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Left Portal Hit"));
 		//UWorld::SpawnActor(&ALeftPortal, "LeftPortal", HitDetails.ImpactPoint, HitDetails.ImpactNormal);
+		bLeftPortalSpawned = true;
 	}
 	else
 	{
@@ -206,6 +210,16 @@ void AGateSDKCharacter::SpawnLeftPortal()
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Left Portal Missed"));
 	}
 
+}
+
+void AGateSDKCharacter::DestroyLeftPortal()
+{
+	if (bLeftPortalSpawned)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Left Portal Destroyed"));
+		//destroy
+		bLeftPortalSpawned = false;
+	}
 }
 
 void AGateSDKCharacter::SpawnRightPortal()
@@ -230,10 +244,22 @@ void AGateSDKCharacter::SpawnRightPortal()
 		DrawDebugLine(GetWorld(), CameraLocation, HitDetails.ImpactPoint, FColor::Green, false, 5.f, ECC_WorldStatic, 1.f);
 		DrawDebugBox(GetWorld(), HitDetails.ImpactPoint, FVector(2.f, 2.f, 2.f), FColor::Orange, false, 5.f, ECC_WorldStatic, 1.f);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, TEXT("Right Portal Hit"));
+		//spawn logic
+		bRightPortalSpawned = true;
 	}
 	else
 	{
 		DrawDebugLine(GetWorld(), CameraLocation, TraceEndPoint, FColor::Orange, false, 5.f, ECC_WorldStatic, 1.f);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, TEXT("Right Portal Missed"));
+	}
+}
+
+void AGateSDKCharacter::DestroyRightPortal()
+{
+	if (bRightPortalSpawned)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Right Portal Destroyed"));
+		//destroy
+		bRightPortalSpawned = false;
 	}
 }

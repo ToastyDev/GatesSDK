@@ -86,10 +86,10 @@ private:
 	FVector RightPortalForwardVector;
 	FRotator LeftPortalRotation;
 	FRotator RightPortalRotation;
-	bool LeftPortalSpawned;
-	bool RightPortalSpawned;
-	bool NewlySpawnedLeftPortal;
-	bool NewlySpawnedRightPortal;
+	bool bLeftPortalSpawned;
+	bool bRightPortalSpawned;
+	bool bNewlySpawnedLeftPortal;
+	bool bNewlySpawnedRightPortal;
 
 protected:
 	
