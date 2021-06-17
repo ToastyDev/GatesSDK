@@ -78,6 +78,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	class UAnimMontage* FireAnimation;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class ALeftPortal> LeftPortalClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class ALeftPortal> RightPortalClass; //change later
+
 private:
 	FVector SavedPlayerVelocity;
 	FVector LeftPortalLocation;
@@ -90,6 +96,8 @@ private:
 	bool bRightPortalSpawned;
 	bool bNewlySpawnedLeftPortal;
 	bool bNewlySpawnedRightPortal;
+	class ALeftPortal* StoredLeftPortal;
+	class ALeftPortal* StoredRightPortal; //change later
 
 protected:
 	
