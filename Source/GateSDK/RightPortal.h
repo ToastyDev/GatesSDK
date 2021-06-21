@@ -21,6 +21,9 @@ public:
 	ARightPortal();
 
 	UPROPERTY(VisibleAnywhere)
+		USceneComponent* PortalRootComponent;
+
+	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* Plane;
 
 	UPROPERTY(VisibleAnywhere)

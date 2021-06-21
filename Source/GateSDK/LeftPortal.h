@@ -20,8 +20,8 @@ public:
 	// Sets default values for this actor's properties
 	ALeftPortal();
 
-	//UPROPERTY(VisibleAnywhere)
-	//USceneComponent* RootComponent;
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* PortalRootComponent;
 
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* Plane;
