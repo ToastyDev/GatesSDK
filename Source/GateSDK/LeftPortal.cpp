@@ -13,7 +13,7 @@ ALeftPortal::ALeftPortal()
 
 	//Plane->SetupAttachment(RootComponent);
 	Plane = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Plane"));
-
+	Plane->SetupAttachment(GetRootComponent());
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> PlaneAsset(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Plane.Shape_Plane'"));
 	if (PlaneAsset.Succeeded())
 	{
@@ -22,19 +22,34 @@ ALeftPortal::ALeftPortal()
 		Plane->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
 		Plane->SetRelativeRotation(FRotator(90.f, 0.f, -90.f));
 		Plane->SetWorldScale3D(FVector(1.25f, 2.25f, 0.f));
+		Plane->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		static ConstructorHelpers::FObjectFinder<UMaterial>PortalMaterial(TEXT("Material'/Game/Materials/RightPortalRT_Mat1.RightPortalRT_Mat1'")); //to display right view on left
+		if (PortalMaterial.Succeeded())
+		{
+			RenderMat = PortalMaterial.Object;
+		}
+		Plane->SetMaterial(0, RenderMat);
 	}
 
 	SceneCapture = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("Scene Capture"));
-	SceneCapture->SetupAttachment(Plane);
+	SceneCapture->SetupAttachment(GetRootComponent());
+	//SceneCapture->SetupAttachment(Plane);
 	SceneCapture->SetRelativeLocation(FVector(10.f, 0.f, 0.f));
-
+	static ConstructorHelpers::FObjectFinder<UTextureRenderTarget2D>RenderTarget(TEXT("TextureRenderTarget2D'/Game/Textures/LeftPortalRT.LeftPortalRT'"));
+	if (RenderTarget.Succeeded())
+	{
+		SceneCapture->TextureTarget = RenderTarget.Object;
+	}
+		
 	Box = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
-	Box->SetupAttachment(Plane);
+	Box->SetupAttachment(GetRootComponent());
+	//Box->SetupAttachment(Plane);
 	Box->SetRelativeLocation(FVector(10.f, 0.f, 0.f));
 	Box->SetWorldScale3D(FVector(0.25f, 1.5f, 3.25f));
 
 	Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
-	Arrow->SetupAttachment(Plane);
+	Arrow->SetupAttachment(GetRootComponent());
+	//Arrow->SetupAttachment(Plane);
 	Arrow->SetRelativeLocation(FVector(10.f, 0.f, 0.f));
 
 }

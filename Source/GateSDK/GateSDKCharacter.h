@@ -82,7 +82,7 @@ public:
 	TSubclassOf<class ALeftPortal> LeftPortalClass;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class ALeftPortal> RightPortalClass; //change later
+	TSubclassOf<class ARightPortal> RightPortalClass;
 
 private:
 	FVector SavedPlayerVelocity;
@@ -97,7 +97,7 @@ private:
 	bool bNewlySpawnedLeftPortal;
 	bool bNewlySpawnedRightPortal;
 	class ALeftPortal* StoredLeftPortal;
-	class ALeftPortal* StoredRightPortal; //change later
+	class ARightPortal* StoredRightPortal;
 
 protected:
 	

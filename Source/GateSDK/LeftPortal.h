@@ -83,7 +83,10 @@ private:
 	AActor* CharacterRef;
 
 	UPROPERTY(VisibleAnywhere)
-	UTextureRenderTarget2D* RenderTarget;
+		UMaterial* RenderMat;
+
+	//UPROPERTY(VisibleAnywhere)
+	//UTextureRenderTarget2D* RenderTarget;
 
 protected:
 	// Called when the game starts or when spawned

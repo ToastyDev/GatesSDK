@@ -3,6 +3,7 @@
 #include "GateSDKCharacter.h"
 #include "GateSDKProjectile.h"
 #include "LeftPortal.h"
+#include "RightPortal.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -93,7 +94,6 @@ void AGateSDKCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	PlayerInputComponent->BindAction("Destroy Left Portal", IE_Pressed, this, &AGateSDKCharacter::DestroyLeftPortal);
 	PlayerInputComponent->BindAction("Spawn Right Portal", IE_Pressed, this, &AGateSDKCharacter::SpawnRightPortal);
 	PlayerInputComponent->BindAction("Destroy Right Portal", IE_Pressed, this, &AGateSDKCharacter::DestroyRightPortal);
-	
 
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AGateSDKCharacter::OnFire);
@@ -256,7 +256,7 @@ void AGateSDKCharacter::SpawnRightPortal()
 		{
 			FActorSpawnParameters ActorSpawnParams;
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-			StoredRightPortal = GetWorld()->SpawnActor<ALeftPortal>(RightPortalClass, HitDetails.ImpactPoint, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams); ();
+			StoredRightPortal = GetWorld()->SpawnActor<ARightPortal>(RightPortalClass, HitDetails.ImpactPoint, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams);
 			bRightPortalSpawned = true;
 		}
 	}
