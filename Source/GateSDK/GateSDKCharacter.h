@@ -85,18 +85,43 @@ public:
 	TSubclassOf<class ARightPortal> RightPortalClass;
 
 private:
+	UPROPERTY(VisibleAnywhere)
 	FVector SavedPlayerVelocity;
+
+	UPROPERTY(VisibleAnywhere)
 	FVector LeftPortalLocation;
+
+	UPROPERTY(VisibleAnywhere)
 	FVector RightPortalLocation;
+
+	UPROPERTY(VisibleAnywhere)
 	FVector LeftPortalForwardVector;
+
+	UPROPERTY(VisibleAnywhere)
 	FVector RightPortalForwardVector;
+
+	UPROPERTY(VisibleAnywhere)
 	FRotator LeftPortalRotation;
+
+	UPROPERTY(VisibleAnywhere)
 	FRotator RightPortalRotation;
+
+	UPROPERTY(VisibleAnywhere)
 	bool bLeftPortalSpawned;
+
+	UPROPERTY(VisibleAnywhere)
 	bool bRightPortalSpawned;
+
+	UPROPERTY(VisibleAnywhere)
 	bool bNewlySpawnedLeftPortal;
+
+	UPROPERTY(VisibleAnywhere)
 	bool bNewlySpawnedRightPortal;
+
+	UPROPERTY(VisibleAnywhere)
 	class ALeftPortal* StoredLeftPortal;
+
+	UPROPERTY(VisibleAnywhere)
 	class ARightPortal* StoredRightPortal;
 
 protected:
@@ -122,12 +147,25 @@ protected:
 	 */
 	void LookUpAtRate(float Rate);
 
+	UFUNCTION()
 	void SpawnLeftPortal();
+
+	UFUNCTION()
 	void SpawnRightPortal();
+
+	UFUNCTION()
 	void DestroyLeftPortal();
+
+	UFUNCTION()
 	void DestroyRightPortal();
+
+	UFUNCTION()
 	void StorePlayerVelocity();
+
+	UFUNCTION()
 	void LeftPortalCollisionCheck();
+
+	UFUNCTION()
 	void RightPortalCollisionCheck();
 	
 protected:
@@ -141,5 +179,10 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	UFUNCTION()
+	FVector GetLeftPortalForwardVector();
+	
+	UFUNCTION()
+	FVector GetRightPortalForwardVector();
 };
 

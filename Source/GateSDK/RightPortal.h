@@ -9,6 +9,9 @@
 #include "Components/BoxComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Engine/TextureRenderTarget2D.h"
+#include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
+#include "GateSDKCharacter.h"
 #include "RightPortal.generated.h"
 
 UCLASS()
@@ -21,69 +24,69 @@ public:
 	ARightPortal();
 
 	UPROPERTY(VisibleAnywhere)
-		USceneComponent* PortalRootComponent;
+	USceneComponent* PortalRootComponent;
 
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* Plane;
+	UStaticMeshComponent* Plane;
 
 	UPROPERTY(VisibleAnywhere)
-		USceneCaptureComponent2D* SceneCapture;
+	USceneCaptureComponent2D* SceneCapture;
 
 	UPROPERTY(VisibleAnywhere)
-		UBoxComponent* Box;
+	UBoxComponent* Box;
 
 	UPROPERTY(VisibleAnywhere)
-		UArrowComponent* Arrow;
+	UArrowComponent* Arrow;
 
 private:
 
 	UPROPERTY(VisibleAnywhere)
-		bool IsSecondPortalSpawned;
+	bool IsSecondPortalSpawned;
 
 	UPROPERTY(VisibleAnywhere)
-		bool IsPlayer;
+	bool IsPlayer;
 
 	UPROPERTY(VisibleAnywhere)
-		bool FirstRun;
+	bool FirstRun;
 
 	UPROPERTY(VisibleAnywhere)
-		int32 VelocityAddition;
+	int32 VelocityAddition;
 
 	UPROPERTY(VisibleAnywhere)
-		int32 SetIndex;
+	int32 SetIndex;
 
 	UPROPERTY(VisibleAnywhere)
-		int32 VelocityAdditionZVector;
+	int32 VelocityAdditionZVector;
 
 	UPROPERTY(VisibleAnywhere)
-		FVector LeftPortalForwardVector;
+	FVector LeftPortalForwardVector;
 
 	UPROPERTY(VisibleAnywhere)
-		FVector RightPortalForwardVector;
+	FVector RightPortalForwardVector;
 
 	UPROPERTY(VisibleAnywhere)
-		FVector OriginalCollisionLocation;
+	FVector OriginalCollisionLocation;
 
 	UPROPERTY(VisibleAnywhere)
-		FVector RandomCollisionLocation;
+	FVector RandomCollisionLocation;
 
 	UPROPERTY(VisibleAnywhere)
-		FRotator LeftPortalRotation;
+	FRotator LeftPortalRotation;
 
 	UPROPERTY(VisibleAnywhere)
-		FRotator RightPortalRotation;
+	FRotator RightPortalRotation;
 
 	UPROPERTY(VisibleAnywhere)
-		FRotator PlayerRotation;
+	FRotator PlayerRotation;
 
 	UPROPERTY(VisibleAnywhere)
-		APlayerController* PlayerController;
+	APlayerController* PlayerController;
 
 	UPROPERTY(VisibleAnywhere)
-		AActor* CharacterRef;
+	AGateSDKCharacter* CharacterRef;
 
 	UPROPERTY(VisibleAnywhere)
-		UMaterial* RenderMat;
+	UMaterial* RenderMat;
 
 protected:
 	// Called when the game starts or when spawned
@@ -94,21 +97,21 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-		void SetplayerVelocity();
+	void SetplayerVelocity();
 
 	UFUNCTION()
-		void SetPlayerRotation();
+	void SetPlayerRotation();
 
 	UFUNCTION()
-		void ResetMaxVelocity();
+	void ResetMaxVelocity();
 
 	UFUNCTION()
-		void SetVelocityAccordingToForwardVector();
+	void SetVelocityAccordingToForwardVector();
 
 	UFUNCTION()
-		void SetPortalLocationOnCall();
+	void SetPortalLocationOnCall();
 
 	UFUNCTION()
-		void SetRenderTargetLocation();
+	void SetRenderTargetRotation();
 
 };

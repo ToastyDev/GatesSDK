@@ -50,6 +50,9 @@ ARightPortal::ARightPortal()
 	Arrow->SetupAttachment(PortalRootComponent);
 	//Arrow->SetupAttachment(Plane);
 	Arrow->SetRelativeLocation(FVector(10.f, 0.f, 0.f));
+
+	CharacterRef = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	CharacterRef = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 }
 
 // Called when the game starts or when spawned
@@ -64,6 +67,7 @@ void ARightPortal::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	SetRenderTargetRotation();
 }
 
 void ARightPortal::SetplayerVelocity()
@@ -86,6 +90,25 @@ void ARightPortal::SetPortalLocationOnCall()
 {
 }
 
-void ARightPortal::SetRenderTargetLocation()
+void ARightPortal::SetRenderTargetRotation()
 {
+	PlayerRotation = GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager->GetCameraRotation();
+	//LeftPortalForwardVector = CharacterRef->GetActorForwardVector();
+	LeftPortalForwardVector = CharacterRef->GetLeftPortalForwardVector();
+	if (LeftPortalForwardVector.X == 1)
+	{
+		SceneCapture->SetRelativeRotation(FRotator(0.f, ((PlayerRotation.Yaw - 180.f) * -1), 0.f));
+	}
+	else if (LeftPortalForwardVector.X == -1)
+	{
+		SceneCapture->SetRelativeRotation(FRotator(0.f, PlayerRotation.Yaw, 0.f));
+	}
+	else if (LeftPortalForwardVector.Y == 1)
+	{
+		SceneCapture->SetRelativeRotation(FRotator(0.f, ((PlayerRotation.Yaw - -90.f) * -1), 0.f));
+	}
+	else if (LeftPortalForwardVector.Y == -1)
+	{
+		SceneCapture->SetRelativeRotation(FRotator(0.f, ((PlayerRotation.Yaw - 90.f) * -1), 0.f));
+	}
 }

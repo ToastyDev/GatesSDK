@@ -209,6 +209,7 @@ void AGateSDKCharacter::SpawnLeftPortal()
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 			StoredLeftPortal = GetWorld()->SpawnActor<ALeftPortal>(LeftPortalClass, HitDetails.ImpactPoint, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams);
 			bLeftPortalSpawned = true;
+			LeftPortalForwardVector = StoredLeftPortal->GetActorForwardVector();
 		}
 	}
 	else
@@ -224,9 +225,15 @@ void AGateSDKCharacter::DestroyLeftPortal()
 	if (bLeftPortalSpawned)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Left Portal Destroyed"));
+		LeftPortalForwardVector = FVector(NULL);
 		GetWorld()->DestroyActor(StoredLeftPortal);
 		bLeftPortalSpawned = false;
 	}
+}
+
+FVector AGateSDKCharacter::GetLeftPortalForwardVector()
+{
+	return LeftPortalForwardVector;
 }
 
 void AGateSDKCharacter::SpawnRightPortal()
@@ -258,6 +265,7 @@ void AGateSDKCharacter::SpawnRightPortal()
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 			StoredRightPortal = GetWorld()->SpawnActor<ARightPortal>(RightPortalClass, HitDetails.ImpactPoint, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams);
 			bRightPortalSpawned = true;
+			RightPortalForwardVector = StoredRightPortal->GetActorForwardVector();
 		}
 	}
 	else
@@ -272,7 +280,13 @@ void AGateSDKCharacter::DestroyRightPortal()
 	if (bRightPortalSpawned)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Right Portal Destroyed"));
+		RightPortalForwardVector = FVector(NULL);
 		GetWorld()->DestroyActor(StoredRightPortal);
 		bRightPortalSpawned = false;
 	}
+}
+
+FVector AGateSDKCharacter::GetRightPortalForwardVector()
+{
+	return RightPortalForwardVector;
 }

@@ -51,6 +51,7 @@ ALeftPortal::ALeftPortal()
 	//Arrow->SetupAttachment(Plane);
 	Arrow->SetRelativeLocation(FVector(10.f, 0.f, 0.f));
 
+	CharacterRef = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 }
 
 // Called when the game starts or when spawned
@@ -65,6 +66,7 @@ void ALeftPortal::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	SetRenderTargetRotation();
 }
 
 void ALeftPortal::SetplayerVelocity()
@@ -88,6 +90,25 @@ void ALeftPortal::SetPortalLocationOnCall()
 {
 }
 
-void ALeftPortal::SetRenderTargetLocation()
+void ALeftPortal::SetRenderTargetRotation()
 {
+	PlayerRotation = GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager->GetCameraRotation();
+	//RightPortalForwardVector = CharacterRef->GetActorForwardVector();
+	RightPortalForwardVector = CharacterRef->GetRightPortalForwardVector();
+	if (RightPortalForwardVector.X == 1)
+	{
+		SceneCapture->SetRelativeRotation(FRotator(0.f, ((PlayerRotation.Yaw - 180.f) * -1), 0.f));
+	}
+	else if (RightPortalForwardVector.X == -1)
+	{
+		SceneCapture->SetRelativeRotation(FRotator(0.f, PlayerRotation.Yaw, 0.f));
+	}
+	else if (RightPortalForwardVector.Y == 1)
+	{
+		SceneCapture->SetRelativeRotation(FRotator(0.f, ((PlayerRotation.Yaw - -90.f) * -1), 0.f));
+	}
+	else if (RightPortalForwardVector.Y == -1)
+	{
+		SceneCapture->SetRelativeRotation(FRotator(0.f, ((PlayerRotation.Yaw - 90.f) * -1), 0.f));
+	}
 }

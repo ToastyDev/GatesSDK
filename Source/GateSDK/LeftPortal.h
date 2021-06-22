@@ -9,6 +9,9 @@
 #include "Components/BoxComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Engine/TextureRenderTarget2D.h"
+#include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
+#include "GateSDKCharacter.h"
 #include "LeftPortal.generated.h"
 
 UCLASS()
@@ -80,13 +83,10 @@ private:
 	APlayerController* PlayerController;
 	
 	UPROPERTY(VisibleAnywhere)
-	AActor* CharacterRef;
+	AGateSDKCharacter* CharacterRef;
 
 	UPROPERTY(VisibleAnywhere)
-		UMaterial* RenderMat;
-
-	//UPROPERTY(VisibleAnywhere)
-	//UTextureRenderTarget2D* RenderTarget;
+	UMaterial* RenderMat;
 
 protected:
 	// Called when the game starts or when spawned
@@ -112,5 +112,5 @@ public:
 	void SetPortalLocationOnCall();
 	
 	UFUNCTION()
-	void SetRenderTargetLocation();
+	void SetRenderTargetRotation();
 };
