@@ -16,7 +16,11 @@ enum ESpawnerType
 	Wep_Railgun UMETA(DisplayName="Railgun"),
 	Wep_BFB UMETA(DisplayName="BFB"),
 	Wep_SMG UMETA(DisplayName="SMG"),
-	Wep_Plasma UMETA(DisplayName="Plasma")
+	Wep_Plasma UMETA(DisplayName="Plasma"),
+	Wep_Rocket UMETA(DisplayName="Rocket"),
+	Wep_Shotgun UMETA(DisplayName="Shotgun"),
+	Wep_BR UMETA(DisplayName="BattleRifle"),
+	Wep_AR UMETA(DisplayName="AssaultRifle")
 };
 
 UCLASS()
@@ -41,8 +45,11 @@ protected:
 	UFUNCTION()
 		void PickupWeapon();
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 		TEnumAsByte<ESpawnerType> SpawnerType;
+
+	UPROPERTY(EditAnywhere)
+		float CollisionSphereRadius;
 
 	UPROPERTY(VisibleAnywhere)
 		float RespawnTimer;
