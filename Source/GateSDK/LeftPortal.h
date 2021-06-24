@@ -85,9 +85,6 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	AGateSDKCharacter* CharacterRef;
 
-	UPROPERTY(VisibleAnywhere)
-	UMaterial* RenderMat;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

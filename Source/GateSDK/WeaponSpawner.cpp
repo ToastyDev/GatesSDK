@@ -9,6 +9,17 @@ AWeaponSpawner::AWeaponSpawner()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	static ConstructorHelpers::FObjectFinder<UMaterial>BaseMatLong(TEXT("Material'/Game/Materials/SpawnerLongMat.SpawnerLongMat'"));
+	if (BaseMatLong.Succeeded())
+	{
+		BaseLongMaterial = BaseMatLong.Object;
+	}
+	static ConstructorHelpers::FObjectFinder<UMaterial>BaseMatShort(TEXT("Material'/Game/Materials/SpawnerShortMat.SpawnerShortMat'"));
+	if (BaseMatShort.Succeeded())
+	{
+		BaseShortMaterial = BaseMatShort.Object;
+	}
+
 	SpawnerRootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root Component"));
 
 	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base Mesh"));
@@ -21,145 +32,69 @@ AWeaponSpawner::AWeaponSpawner()
 
 	WepMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Weapon Mesh"));
 	WepMesh->SetupAttachment(SpawnerRootComponent);
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>GunMesh(TEXT("StaticMesh'/Game/Meshes/SM_Gun.SM_Gun'"));
+	if (GunMesh.Succeeded())
+	{
+		WepMesh->SetStaticMesh(GunMesh.Object);
+	}
 
 	SphereCollider = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Collider"));
 	SphereCollider->SetupAttachment(SpawnerRootComponent);
 	SphereCollider->SetSphereRadius(CollisionSphereRadius);
 	DrawDebugSphere(GetWorld(), FVector(SphereCollider->GetComponentLocation()), SphereCollider->GetScaledSphereRadius(), 16, FColor::Purple, true, -1.f);
-
-	//Finish constructing based on enum type here
-	if (SpawnerType == ESpawnerType::Wep_Sniper)
-	{
-		static ConstructorHelpers::FObjectFinder<UStaticMesh>GunMesh(TEXT("StaticMesh'/Game/Meshes/SM_Gun.SM_Gun'"));
-		if (GunMesh.Succeeded())
-		{
-			WepMesh->SetStaticMesh(GunMesh.Object);
-		}
-		static ConstructorHelpers::FObjectFinder<UMaterial>BaseMat(TEXT("Material'/Game/Materials/SpawnerLongMat.SpawnerLongMat'"));
-		if (BaseMat.Succeeded())
-		{
-			BaseMesh->SetMaterial(0, BaseMat.Object);
-		}
-		RespawnTimer = 120.f; //2 min
-	}
-	else if (SpawnerType == ESpawnerType::Wep_BFB)
-	{
-		static ConstructorHelpers::FObjectFinder<UStaticMesh>GunMesh(TEXT("StaticMesh'/Game/Meshes/SM_Gun.SM_Gun'"));
-		if (GunMesh.Succeeded())
-		{
-			WepMesh->SetStaticMesh(GunMesh.Object);
-		}
-		static ConstructorHelpers::FObjectFinder<UMaterial>BaseMat(TEXT("Material'/Game/Materials/SpawnerLongMat.SpawnerLongMat'"));
-		if (BaseMat.Succeeded())
-		{
-			BaseMesh->SetMaterial(0, BaseMat.Object);
-		}
-		RespawnTimer = 150.f; //2 min 30 sec
-	}
-	else if (SpawnerType == ESpawnerType::Wep_Railgun)
-	{
-		static ConstructorHelpers::FObjectFinder<UStaticMesh>GunMesh(TEXT("StaticMesh'/Game/Meshes/SM_Gun.SM_Gun'"));
-		if (GunMesh.Succeeded())
-		{
-			WepMesh->SetStaticMesh(GunMesh.Object);
-		}
-		static ConstructorHelpers::FObjectFinder<UMaterial>BaseMat(TEXT("Material'/Game/Materials/SpawnerLongMat.SpawnerLongMat'"));
-		if (BaseMat.Succeeded())
-		{
-			BaseMesh->SetMaterial(0, BaseMat.Object);
-		}
-		RespawnTimer = 150.f; //2 min 30 sec
-	}
-	else if (SpawnerType == ESpawnerType::Wep_Plasma)
-	{
-		static ConstructorHelpers::FObjectFinder<UStaticMesh>GunMesh(TEXT("StaticMesh'/Game/Meshes/SM_Gun.SM_Gun'"));
-		if (GunMesh.Succeeded())
-		{
-			WepMesh->SetStaticMesh(GunMesh.Object);
-		}
-		static ConstructorHelpers::FObjectFinder<UMaterial>BaseMat(TEXT("Material'/Game/Materials/SpawnerShortMat.SpawnerShortMat'"));
-		if (BaseMat.Succeeded())
-		{
-			BaseMesh->SetMaterial(0, BaseMat.Object);
-		}
-		RespawnTimer = 90.f; //1 min 30 sec
-	}
-	else if (SpawnerType == ESpawnerType::Wep_SMG)
-	{
-		static ConstructorHelpers::FObjectFinder<UStaticMesh>GunMesh(TEXT("StaticMesh'/Game/Meshes/SM_Gun.SM_Gun'"));
-		if (GunMesh.Succeeded())
-		{
-			WepMesh->SetStaticMesh(GunMesh.Object);
-		}
-		static ConstructorHelpers::FObjectFinder<UMaterial>BaseMat(TEXT("Material'/Game/Materials/SpawnerShortMat.SpawnerShortMat'"));
-		if (BaseMat.Succeeded())
-		{
-			BaseMesh->SetMaterial(0, BaseMat.Object);
-		}
-		RespawnTimer = 60.f; //1 min
-	}
-	else if (SpawnerType == ESpawnerType::Wep_Rocket)
-	{
-		static ConstructorHelpers::FObjectFinder<UStaticMesh>GunMesh(TEXT("StaticMesh'/Game/Meshes/SM_Gun.SM_Gun'"));
-		if (GunMesh.Succeeded())
-		{
-			WepMesh->SetStaticMesh(GunMesh.Object);
-		}
-		static ConstructorHelpers::FObjectFinder<UMaterial>BaseMat(TEXT("Material'/Game/Materials/SpawnerLongMat.SpawnerLongMat'"));
-		if (BaseMat.Succeeded())
-		{
-			BaseMesh->SetMaterial(0, BaseMat.Object);
-		}
-		RespawnTimer = 150.f; //2 min 30 sec
-	}
-	else if (SpawnerType == ESpawnerType::Wep_Shotgun)
-	{
-		static ConstructorHelpers::FObjectFinder<UStaticMesh>GunMesh(TEXT("StaticMesh'/Game/Meshes/SM_Gun.SM_Gun'"));
-		if (GunMesh.Succeeded())
-		{
-			WepMesh->SetStaticMesh(GunMesh.Object);
-		}
-		static ConstructorHelpers::FObjectFinder<UMaterial>BaseMat(TEXT("Material'/Game/Materials/SpawnerLongMat.SpawnerLongMat'"));
-		if (BaseMat.Succeeded())
-		{
-			BaseMesh->SetMaterial(0, BaseMat.Object);
-		}
-		RespawnTimer = 120.f; //2 min
-	}
-	else if (SpawnerType == ESpawnerType::Wep_BR)
-	{
-		static ConstructorHelpers::FObjectFinder<UStaticMesh>GunMesh(TEXT("StaticMesh'/Game/Meshes/SM_Gun.SM_Gun'"));
-		if (GunMesh.Succeeded())
-		{
-			WepMesh->SetStaticMesh(GunMesh.Object);
-		}
-		static ConstructorHelpers::FObjectFinder<UMaterial>BaseMat(TEXT("Material'/Game/Materials/SpawnerShortMat.SpawnerShortMat'"));
-		if (BaseMat.Succeeded())
-		{
-			BaseMesh->SetMaterial(0, BaseMat.Object);
-		}
-		RespawnTimer = 60.f; //1 min
-	}
-	else if (SpawnerType == ESpawnerType::Wep_AR)
-	{
-		static ConstructorHelpers::FObjectFinder<UStaticMesh>GunMesh(TEXT("StaticMesh'/Game/Meshes/SM_Gun.SM_Gun'"));
-		if (GunMesh.Succeeded())
-		{
-			WepMesh->SetStaticMesh(GunMesh.Object);
-		}
-		static ConstructorHelpers::FObjectFinder<UMaterial>BaseMat(TEXT("Material'/Game/Materials/SpawnerShortMat.SpawnerShortMat'"));
-		if (BaseMat.Succeeded())
-		{
-			BaseMesh->SetMaterial(0, BaseMat.Object);
-		}
-		RespawnTimer = 30.f; //30 sec
-	}
 }
 
 // Called when the game starts or when spawned
 void AWeaponSpawner::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (SpawnerType == ESpawnerType::Wep_Sniper)
+	{
+		BaseMesh->SetMaterial(0, BaseLongMaterial);
+		RespawnTimer = 120.f; //2 min
+	}
+	else if (SpawnerType == ESpawnerType::Wep_BFB)
+	{
+		BaseMesh->SetMaterial(0, BaseLongMaterial);
+		RespawnTimer = 150.f; //2 min 30 sec
+	}
+	else if (SpawnerType == ESpawnerType::Wep_Railgun)
+	{
+		BaseMesh->SetMaterial(0, BaseLongMaterial);
+		RespawnTimer = 150.f; //2 min 30 sec
+	}
+	else if (SpawnerType == ESpawnerType::Wep_Plasma)
+	{
+		BaseMesh->SetMaterial(0, BaseShortMaterial);
+		RespawnTimer = 90.f; //1 min 30 sec
+	}
+	else if (SpawnerType == ESpawnerType::Wep_SMG)
+	{
+		BaseMesh->SetMaterial(0, BaseShortMaterial);
+		RespawnTimer = 60.f; //1 min
+	}
+	else if (SpawnerType == ESpawnerType::Wep_Rocket)
+	{
+		BaseMesh->SetMaterial(0, BaseLongMaterial);
+		RespawnTimer = 150.f; //2 min 30 sec
+	}
+	else if (SpawnerType == ESpawnerType::Wep_Shotgun)
+	{
+		BaseMesh->SetMaterial(0, BaseLongMaterial);
+		RespawnTimer = 120.f; //2 min
+	}
+	else if (SpawnerType == ESpawnerType::Wep_BR)
+	{
+		BaseMesh->SetMaterial(0, BaseShortMaterial);
+		RespawnTimer = 60.f; //1 min
+	}
+	else if (SpawnerType == ESpawnerType::Wep_AR)
+	{
+		BaseMesh->SetMaterial(0, BaseShortMaterial);
+		RespawnTimer = 30.f; //30 sec
+	}
+
 	DrawDebugSphere(GetWorld(), FVector(SphereCollider->GetComponentLocation()), SphereCollider->GetScaledSphereRadius(), 16, FColor::Purple, true, -1.f);
 }
 

@@ -69,6 +69,11 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 		USphereComponent* SphereCollider;
 
+	UPROPERTY()
+		UMaterial* BaseShortMaterial;
+
+	UPROPERTY()
+		UMaterial* BaseLongMaterial;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

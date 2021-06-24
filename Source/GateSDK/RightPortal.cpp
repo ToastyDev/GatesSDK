@@ -25,9 +25,9 @@ ARightPortal::ARightPortal()
 		static ConstructorHelpers::FObjectFinder<UMaterial>PortalMaterial(TEXT("Material'/Game/Materials/LeftPortalRT_Mat.LeftPortalRT_Mat'")); //to display left view on right
 		if (PortalMaterial.Succeeded())
 		{
-			RenderMat = PortalMaterial.Object;
+			Plane->SetMaterial(0, PortalMaterial.Object);
 		}
-		Plane->SetMaterial(0, RenderMat);
+
 	}
 
 	SceneCapture = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("Scene Capture"));
