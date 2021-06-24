@@ -290,3 +290,18 @@ FVector AGateSDKCharacter::GetRightPortalForwardVector()
 {
 	return RightPortalForwardVector;
 }
+
+void AGateSDKCharacter::StorePlayerVelocity()
+{
+
+}
+
+void AGateSDKCharacter::LeftPortalCollisionCheck()
+{
+
+}
+
+void AGateSDKCharacter::RightPortalCollisionCheck()
+{
+
+}

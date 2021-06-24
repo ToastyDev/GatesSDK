@@ -51,7 +51,8 @@ ALeftPortal::ALeftPortal()
 	//Arrow->SetupAttachment(Plane);
 	Arrow->SetRelativeLocation(FVector(10.f, 0.f, 0.f));
 
-	CharacterRef = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	CharacterRef = Cast<AGateSDKCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 9);
 }
 
 // Called when the game starts or when spawned
