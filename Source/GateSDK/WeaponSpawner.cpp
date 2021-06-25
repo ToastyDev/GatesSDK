@@ -41,7 +41,8 @@ AWeaponSpawner::AWeaponSpawner()
 	SphereCollider = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Collider"));
 	SphereCollider->SetupAttachment(SpawnerRootComponent);
 	SphereCollider->SetSphereRadius(CollisionSphereRadius);
-	DrawDebugSphere(GetWorld(), FVector(SphereCollider->GetComponentLocation()), SphereCollider->GetScaledSphereRadius(), 16, FColor::Purple, true, -1.f);
+
+	bIsPickedUp = false;
 }
 
 // Called when the game starts or when spawned
@@ -94,8 +95,6 @@ void AWeaponSpawner::BeginPlay()
 		BaseMesh->SetMaterial(0, BaseShortMaterial);
 		RespawnTimer = 30.f; //30 sec
 	}
-
-	DrawDebugSphere(GetWorld(), FVector(SphereCollider->GetComponentLocation()), SphereCollider->GetScaledSphereRadius(), 16, FColor::Purple, true, -1.f);
 }
 
 // Called every frame
@@ -119,5 +118,5 @@ void AWeaponSpawner::StartRespawnTimer()
 
 void AWeaponSpawner::PickupWeapon()
 {
-
+	bIsPickedUp = true;
 }

@@ -187,6 +187,7 @@ void AGateSDKCharacter::SpawnLeftPortal()
 	FVector CameraLocation = FirstPersonCameraComponent->GetComponentLocation();
 	FRotator CameraRotation = FirstPersonCameraComponent->GetComponentRotation();
 
+	//FVector TraceEndPoint = CameraLocation + (CameraRotation.Vector() * 10000.f);
 	FVector TraceEndPoint = CameraLocation + (CameraRotation.Vector() * 10000.f);
 
 	FCollisionQueryParams TraceParams(FName(TEXT("InteractTrace")), true, NULL);
@@ -203,13 +204,49 @@ void AGateSDKCharacter::SpawnLeftPortal()
 		DrawDebugBox(GetWorld(), HitDetails.ImpactPoint, FVector(2.f, 2.f, 2.f), FColor::Blue, false, 5.f, ECC_WorldStatic, 1.f);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Left Portal Hit"));
 
-		if (LeftPortalClass != NULL && !bLeftPortalSpawned)
+		if (LeftPortalClass != NULL /* && !bLeftPortalSpawned*/)
 		{
+			if (bLeftPortalSpawned)
+				DestroyLeftPortal();
+
 			FActorSpawnParameters ActorSpawnParams;
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-			StoredLeftPortal = GetWorld()->SpawnActor<ALeftPortal>(LeftPortalClass, HitDetails.ImpactPoint, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams);
+			//push off surface so not inside
+			//TODO: Define 45 degree
+			if (HitDetails.ImpactNormal.X == 1)
+			{
+				FVector SpawnLoc = HitDetails.ImpactPoint + FVector(1.f, 0.f, 0.f);
+				StoredLeftPortal = GetWorld()->SpawnActor<ALeftPortal>(LeftPortalClass, SpawnLoc, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams);
+			}
+			else if (HitDetails.ImpactNormal.X == -1)
+			{
+				FVector SpawnLoc = HitDetails.ImpactPoint + FVector(-1.f, 0.f, 0.f);
+				StoredLeftPortal = GetWorld()->SpawnActor<ALeftPortal>(LeftPortalClass, SpawnLoc, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams);
+			}
+			else if (HitDetails.ImpactNormal.Y == 1)
+			{
+				FVector SpawnLoc = HitDetails.ImpactPoint + FVector(0.f, 1.f, 0.f);
+				StoredLeftPortal = GetWorld()->SpawnActor<ALeftPortal>(LeftPortalClass, SpawnLoc, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams);
+			}
+			else if (HitDetails.ImpactNormal.Y == -1)
+			{
+				FVector SpawnLoc = HitDetails.ImpactPoint + FVector(0.f, -1.f, 0.f);
+				StoredLeftPortal = GetWorld()->SpawnActor<ALeftPortal>(LeftPortalClass, SpawnLoc, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams);
+			}
+			else if (HitDetails.ImpactNormal.Z == 1)
+			{
+				FVector SpawnLoc = HitDetails.ImpactPoint + FVector(0.f, 0.f, 1.f);
+				StoredLeftPortal = GetWorld()->SpawnActor<ALeftPortal>(LeftPortalClass, SpawnLoc, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams);
+			}
+			else if (HitDetails.ImpactNormal.Z == -1)
+			{
+				FVector SpawnLoc = HitDetails.ImpactPoint + FVector(0.f, 0.f, -1.f);
+				StoredLeftPortal = GetWorld()->SpawnActor<ALeftPortal>(LeftPortalClass, SpawnLoc, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams);
+			}
+			
 			bLeftPortalSpawned = true;
-			LeftPortalForwardVector = StoredLeftPortal->GetActorForwardVector();
+			//LeftPortalForwardVector = StoredLeftPortal->GetActorForwardVector();
+			LeftPortalForwardVector = HitDetails.ImpactNormal;
 		}
 	}
 	else
@@ -259,13 +296,49 @@ void AGateSDKCharacter::SpawnRightPortal()
 		DrawDebugBox(GetWorld(), HitDetails.ImpactPoint, FVector(2.f, 2.f, 2.f), FColor::Orange, false, 5.f, ECC_WorldStatic, 1.f);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, TEXT("Right Portal Hit"));
 		
-		if (RightPortalClass != NULL && !bRightPortalSpawned)
+		if (RightPortalClass != NULL /* && !bRightPortalSpawned*/)
 		{
+			if (bRightPortalSpawned)
+				DestroyRightPortal();
+
 			FActorSpawnParameters ActorSpawnParams;
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-			StoredRightPortal = GetWorld()->SpawnActor<ARightPortal>(RightPortalClass, HitDetails.ImpactPoint, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams);
+			//push off surface so not inside
+			// TODO define 45 degree
+			if (HitDetails.ImpactNormal.X == 1)
+			{
+				FVector SpawnLoc = HitDetails.ImpactPoint + FVector(1.f, 0.f, 0.f);
+				StoredRightPortal = GetWorld()->SpawnActor<ARightPortal>(RightPortalClass, SpawnLoc, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams);
+			}
+			else if (HitDetails.ImpactNormal.X == -1)
+			{
+				FVector SpawnLoc = HitDetails.ImpactPoint + FVector(-1.f, 0.f, 0.f);
+				StoredRightPortal = GetWorld()->SpawnActor<ARightPortal>(RightPortalClass, SpawnLoc, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams);
+			}
+			else if (HitDetails.ImpactNormal.Y == 1)
+			{
+				FVector SpawnLoc = HitDetails.ImpactPoint + FVector(0.f, 1.f, 0.f);
+				StoredRightPortal = GetWorld()->SpawnActor<ARightPortal>(RightPortalClass, SpawnLoc, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams);
+			}
+			else if (HitDetails.ImpactNormal.Y == -1)
+			{
+				FVector SpawnLoc = HitDetails.ImpactPoint + FVector(0.f, -1.f, 0.f);
+				StoredRightPortal = GetWorld()->SpawnActor<ARightPortal>(RightPortalClass, SpawnLoc, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams);
+			}
+			else if (HitDetails.ImpactNormal.Z == 1)
+			{
+				FVector SpawnLoc = HitDetails.ImpactPoint + FVector(0.f, 0.f, 1.f);
+				StoredRightPortal = GetWorld()->SpawnActor<ARightPortal>(RightPortalClass, SpawnLoc, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams);
+			}
+			else if (HitDetails.ImpactNormal.Z == -1)
+			{
+				FVector SpawnLoc = HitDetails.ImpactPoint + FVector(0.f, 0.f, -1.f);
+				StoredRightPortal = GetWorld()->SpawnActor<ARightPortal>(RightPortalClass, SpawnLoc, HitDetails.ImpactNormal.Rotation(), ActorSpawnParams);
+			}
+			
 			bRightPortalSpawned = true;
-			RightPortalForwardVector = StoredRightPortal->GetActorForwardVector();
+			//RightPortalForwardVector = StoredRightPortal->GetActorForwardVector();
+			RightPortalForwardVector = HitDetails.ImpactNormal;
 		}
 	}
 	else

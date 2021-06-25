@@ -49,7 +49,10 @@ protected:
 		TEnumAsByte<ESpawnerType> SpawnerType;
 
 	UPROPERTY(EditAnywhere)
-		float CollisionSphereRadius;
+		float CollisionSphereRadius = 75.f;
+
+	UPROPERTY(VisibleAnywhere)
+		bool bIsPickedUp;
 
 	UPROPERTY(VisibleAnywhere)
 		float RespawnTimer;
