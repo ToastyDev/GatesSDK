@@ -206,7 +206,7 @@ void AGateSDKCharacter::SpawnLeftPortal()
 
 		if (LeftPortalClass != NULL /* && !bLeftPortalSpawned*/)
 		{
-			if (bLeftPortalSpawned)
+			if (bLeftPortalSpawned && StoredLeftPortal != NULL)
 				DestroyLeftPortal();
 
 			FActorSpawnParameters ActorSpawnParams;
@@ -298,7 +298,7 @@ void AGateSDKCharacter::SpawnRightPortal()
 		
 		if (RightPortalClass != NULL /* && !bRightPortalSpawned*/)
 		{
-			if (bRightPortalSpawned)
+			if (bRightPortalSpawned && StoredRightPortal != NULL)
 				DestroyRightPortal();
 
 			FActorSpawnParameters ActorSpawnParams;
