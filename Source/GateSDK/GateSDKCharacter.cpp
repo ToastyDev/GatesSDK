@@ -60,6 +60,11 @@ AGateSDKCharacter::AGateSDKCharacter()
 	// Default offset from the character location for projectiles to spawn
 	GunOffset = FVector(100.0f, 0.0f, 10.0f);
 
+	TriggerComponent = GetCapsuleComponent();
+	//TriggerComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Trigger Capsule"));
+	//TriggerComponent->SetupAttachment(GetCapsuleComponent());
+	TriggerComponent->OnComponentBeginOverlap.AddDynamic(this, &AGateSDKCharacter::OnBeginActorOverlap);
+
 	// Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P, FP_Gun, and VR_Gun 
 	// are set in the derived blueprint asset named MyCharacter to avoid direct content references in C++.
 }
@@ -366,7 +371,7 @@ FVector AGateSDKCharacter::GetRightPortalForwardVector()
 
 void AGateSDKCharacter::StorePlayerVelocity()
 {
-
+	SavedPlayerVelocity = GetVelocity();
 }
 
 void AGateSDKCharacter::LeftPortalCollisionCheck()
@@ -377,4 +382,20 @@ void AGateSDKCharacter::LeftPortalCollisionCheck()
 void AGateSDKCharacter::RightPortalCollisionCheck()
 {
 
+}
+
+void AGateSDKCharacter::OnBeginActorOverlap(UPrimitiveComponent* overlappedComponent, AActor* otherActor, UPrimitiveComponent* otherComponent, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult)
+{
+	//left
+	if (otherActor && (otherActor != this) && otherComponent && otherActor->GetClass()->IsChildOf(ALeftPortal::StaticClass()))
+	{
+		StorePlayerVelocity();
+		SetActorLocation(StoredRightPortal->GetActorLocation());
+	}
+	//right
+	if (otherActor && (otherActor != this) && otherComponent && otherActor->GetClass()->IsChildOf(ARightPortal::StaticClass()))
+	{
+		StorePlayerVelocity();
+		SetActorLocation(StoredLeftPortal->GetActorLocation());
+	}
 }

@@ -78,6 +78,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	class UAnimMontage* FireAnimation;
 
+	UPROPERTY(VisibleAnywhere)
+	UCapsuleComponent* TriggerComponent;
+
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ALeftPortal> LeftPortalClass;
 
@@ -167,6 +170,9 @@ protected:
 
 	UFUNCTION()
 	void RightPortalCollisionCheck();
+
+	UFUNCTION()
+	void OnBeginActorOverlap(UPrimitiveComponent* overlappedComponent, AActor* otherActor, UPrimitiveComponent* otherComponent, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult);
 	
 protected:
 	// APawn interface
