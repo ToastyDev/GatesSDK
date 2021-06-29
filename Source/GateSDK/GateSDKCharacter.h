@@ -78,14 +78,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	class UAnimMontage* FireAnimation;
 
-	UPROPERTY(VisibleAnywhere)
-	UCapsuleComponent* TriggerComponent;
+	//UPROPERTY(VisibleAnywhere)
+	//UCapsuleComponent* TriggerComponent;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ALeftPortal> LeftPortalClass;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ARightPortal> RightPortalClass;
+	
+	UPROPERTY(VisibleAnywhere)
+	class ALeftPortal* StoredLeftPortal;
+
+	UPROPERTY(VisibleAnywhere)
+	class ARightPortal* StoredRightPortal;
 
 private:
 	UPROPERTY(VisibleAnywhere)
@@ -122,10 +128,7 @@ private:
 	bool bNewlySpawnedRightPortal;
 
 	UPROPERTY(VisibleAnywhere)
-	class ALeftPortal* StoredLeftPortal;
-
-	UPROPERTY(VisibleAnywhere)
-	class ARightPortal* StoredRightPortal;
+	bool bCanTeleport = true;
 
 protected:
 	
@@ -171,8 +174,8 @@ protected:
 	UFUNCTION()
 	void RightPortalCollisionCheck();
 
-	UFUNCTION()
-	void OnBeginActorOverlap(UPrimitiveComponent* overlappedComponent, AActor* otherActor, UPrimitiveComponent* otherComponent, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult);
+	//UFUNCTION()
+	//void OnBeginActorOverlap(UPrimitiveComponent* overlappedComponent, AActor* otherActor, UPrimitiveComponent* otherComponent, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult);
 	
 protected:
 	// APawn interface
@@ -190,5 +193,18 @@ public:
 	
 	UFUNCTION()
 	FVector GetRightPortalForwardVector();
+
+	UFUNCTION()
+	bool GetCanTeleport();
+
+	UFUNCTION()
+	void SetCanTeleport(bool bCanTele);
+
+	UFUNCTION()
+	FVector GetRightPortalLocation();
+
+	UFUNCTION()
+	FVector GetLeftPortalLocation();
+
 };
 

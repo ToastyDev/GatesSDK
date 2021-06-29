@@ -60,10 +60,10 @@ AGateSDKCharacter::AGateSDKCharacter()
 	// Default offset from the character location for projectiles to spawn
 	GunOffset = FVector(100.0f, 0.0f, 10.0f);
 
-	TriggerComponent = GetCapsuleComponent();
+	//TriggerComponent = GetCapsuleComponent();
 	//TriggerComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Trigger Capsule"));
 	//TriggerComponent->SetupAttachment(GetCapsuleComponent());
-	TriggerComponent->OnComponentBeginOverlap.AddDynamic(this, &AGateSDKCharacter::OnBeginActorOverlap);
+	//TriggerComponent->OnComponentBeginOverlap.AddDynamic(this, &AGateSDKCharacter::OnBeginActorOverlap);
 
 	// Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P, FP_Gun, and VR_Gun 
 	// are set in the derived blueprint asset named MyCharacter to avoid direct content references in C++.
@@ -384,7 +384,33 @@ void AGateSDKCharacter::RightPortalCollisionCheck()
 
 }
 
-void AGateSDKCharacter::OnBeginActorOverlap(UPrimitiveComponent* overlappedComponent, AActor* otherActor, UPrimitiveComponent* otherComponent, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult)
+bool AGateSDKCharacter::GetCanTeleport()
+{
+	return bCanTeleport;
+}
+
+void AGateSDKCharacter::SetCanTeleport(bool bCanTele)
+{
+	bCanTeleport = bCanTele;
+}
+
+FVector AGateSDKCharacter::GetRightPortalLocation()
+{
+	if (StoredRightPortal != NULL)
+		return StoredRightPortal->GetActorLocation();
+	else
+		return FVector(NULL);
+}
+
+FVector AGateSDKCharacter::GetLeftPortalLocation()
+{
+	if (StoredLeftPortal != NULL)
+		return StoredLeftPortal->GetActorLocation();
+	else
+		return FVector(NULL);
+}
+
+/*void AGateSDKCharacter::OnBeginActorOverlap(UPrimitiveComponent* overlappedComponent, AActor* otherActor, UPrimitiveComponent* otherComponent, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult)
 {
 	//left
 	if (otherActor && (otherActor != this) && otherComponent && otherActor->GetClass()->IsChildOf(ALeftPortal::StaticClass()))
@@ -398,4 +424,4 @@ void AGateSDKCharacter::OnBeginActorOverlap(UPrimitiveComponent* overlappedCompo
 		StorePlayerVelocity();
 		SetActorLocation(StoredLeftPortal->GetActorLocation());
 	}
-}
+}*/

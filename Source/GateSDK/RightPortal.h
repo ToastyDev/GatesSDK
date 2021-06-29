@@ -38,7 +38,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UArrowComponent* Arrow;
 
-private:
+//private:
 
 	UPROPERTY(VisibleAnywhere)
 	bool IsSecondPortalSpawned;
@@ -110,5 +110,8 @@ public:
 
 	UFUNCTION()
 	void SetRenderTargetRotation();
+	
+	UFUNCTION()
+	void OnComponentBeginOverlap(UPrimitiveComponent* overlappedComponent, AActor* otherActor, UPrimitiveComponent* otherComponent, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult);
 
 };

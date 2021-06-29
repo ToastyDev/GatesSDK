@@ -45,6 +45,7 @@ ARightPortal::ARightPortal()
 	//Box->SetupAttachment(Plane);
 	Box->SetRelativeLocation(FVector(10.f, 0.f, 0.f));
 	Box->SetWorldScale3D(FVector(0.25f, 1.5f, 3.25f));
+	Box->OnComponentBeginOverlap.AddDynamic(this, &ARightPortal::OnComponentBeginOverlap);
 
 	Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
 	Arrow->SetupAttachment(PortalRootComponent);
@@ -66,6 +67,8 @@ void ARightPortal::BeginPlay()
 void ARightPortal::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	CharacterRef->StoredRightPortal->SetActorLocation(GetActorLocation());
 
 	SetRenderTargetRotation();
 }
@@ -111,4 +114,9 @@ void ARightPortal::SetRenderTargetRotation()
 	{
 		SceneCapture->SetRelativeRotation(FRotator(0.f, ((PlayerRotation.Yaw - 90.f) * -1), 0.f));
 	}
+}
+
+void ARightPortal::OnComponentBeginOverlap(UPrimitiveComponent* overlappedComponent, AActor* otherActor, UPrimitiveComponent* otherComponent, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult)
+{
+
 }

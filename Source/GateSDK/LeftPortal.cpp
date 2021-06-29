@@ -44,6 +44,7 @@ ALeftPortal::ALeftPortal()
 	//Box->SetupAttachment(Plane);
 	Box->SetRelativeLocation(FVector(10.f, 0.f, 0.f));
 	Box->SetWorldScale3D(FVector(0.25f, 1.5f, 3.25f));
+	Box->OnComponentBeginOverlap.AddDynamic(this, &ALeftPortal::OnComponentBeginOverlap);
 
 	Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
 	Arrow->SetupAttachment(PortalRootComponent);
@@ -51,7 +52,7 @@ ALeftPortal::ALeftPortal()
 	Arrow->SetRelativeLocation(FVector(10.f, 0.f, 0.f));
 
 	CharacterRef = Cast<AGateSDKCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-	PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 9);
+	PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 }
 
 // Called when the game starts or when spawned
@@ -66,10 +67,13 @@ void ALeftPortal::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (CharacterRef->GetRightPortalLocation() != FVector(0.f, 0.f, 0.f))
+		IsSecondPortalSpawned = true;
+
 	SetRenderTargetRotation();
 }
 
-void ALeftPortal::SetplayerVelocity()
+void ALeftPortal::SetPlayerVelocity()
 {
 
 }
@@ -110,5 +114,33 @@ void ALeftPortal::SetRenderTargetRotation()
 	else if (RightPortalForwardVector.Y == -1)
 	{
 		SceneCapture->SetRelativeRotation(FRotator(0.f, ((PlayerRotation.Yaw - 90.f) * -1), 0.f));
+	}
+}
+
+void ALeftPortal::OnComponentBeginOverlap(UPrimitiveComponent* overlappedComponent, AActor* otherActor, UPrimitiveComponent* otherComponent, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult)
+{
+	if (IsSecondPortalSpawned)
+	{
+		if (otherActor == CharacterRef)
+		{
+			IsPlayer = true;
+			LeftPortalForwardVector = CharacterRef->GetLeftPortalForwardVector();
+			if (CharacterRef->GetCanTeleport())
+			{
+				CharacterRef->SetCanTeleport(false);
+				CharacterRef->SetActorLocation(CharacterRef->GetRightPortalLocation(), false, nullptr, ETeleportType::TeleportPhysics);
+				if (IsPlayer)
+				{
+					SetPlayerRotation();
+					SetPlayerVelocity();
+					CharacterRef->SetCanTeleport(true);
+				}
+			}
+		}
+		else
+		{
+			IsPlayer = false;
+			LeftPortalForwardVector = CharacterRef->GetLeftPortalForwardVector();
+		}
 	}
 }
