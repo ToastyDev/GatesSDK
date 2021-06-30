@@ -25,6 +25,7 @@ ARightPortal::ARightPortal()
 		static ConstructorHelpers::FObjectFinder<UMaterial>PortalMaterial(TEXT("Material'/Game/Materials/LeftPortalRT_Mat.LeftPortalRT_Mat'")); //to display left view on right
 		if (PortalMaterial.Succeeded())
 		{
+			LeftPortalMat = PortalMaterial.Object;
 			Plane->SetMaterial(0, PortalMaterial.Object);
 		}
 
@@ -54,6 +55,10 @@ ARightPortal::ARightPortal()
 
 	CharacterRef = Cast<AGateSDKCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+
+	static ConstructorHelpers::FObjectFinder<UMaterial>LeftPortalNotSpawnMat(TEXT("Material'/Game/Materials/NoLeftPortalRTMat.NoLeftPortalRTMat'"));
+	if (LeftPortalNotSpawnMat.Succeeded())
+		LeftPortalNotSpawnedMat = LeftPortalNotSpawnMat.Object;
 }
 
 // Called when the game starts or when spawned
@@ -70,10 +75,21 @@ void ARightPortal::Tick(float DeltaTime)
 
 	CharacterRef->StoredRightPortal->SetActorLocation(GetActorLocation());
 
+	if (CharacterRef->GetLeftPortalLocation() != FVector(NULL))
+	{
+		Plane->SetMaterial(0, LeftPortalMat);
+		IsSecondPortalSpawned = true;
+	}
+	else
+	{
+		Plane->SetMaterial(0, LeftPortalNotSpawnedMat);
+		IsSecondPortalSpawned = false;
+	}
+
 	SetRenderTargetRotation();
 }
 
-void ARightPortal::SetplayerVelocity()
+void ARightPortal::SetPlayerVelocity()
 {
 }
 
@@ -118,5 +134,28 @@ void ARightPortal::SetRenderTargetRotation()
 
 void ARightPortal::OnComponentBeginOverlap(UPrimitiveComponent* overlappedComponent, AActor* otherActor, UPrimitiveComponent* otherComponent, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult)
 {
-
+	if (IsSecondPortalSpawned)
+	{
+		if (otherActor == CharacterRef)
+		{
+			IsPlayer = true;
+			RightPortalForwardVector = CharacterRef->GetRightPortalForwardVector();
+			if (CharacterRef->GetCanTeleport())
+			{
+				CharacterRef->SetCanTeleport(false);
+				CharacterRef->SetActorLocation(CharacterRef->GetLeftPortalLocation(), false, nullptr, ETeleportType::TeleportPhysics);
+				if (IsPlayer)
+				{
+					SetPlayerRotation();
+					SetPlayerVelocity();
+					CharacterRef->SetCanTeleport(true);
+				}
+			}
+		}
+		else
+		{
+			IsPlayer = false;
+			RightPortalForwardVector = CharacterRef->GetRightPortalForwardVector();
+		}
+	}
 }

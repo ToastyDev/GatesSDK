@@ -38,6 +38,12 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UArrowComponent* Arrow;
 
+	UPROPERTY()
+	UMaterial* LeftPortalNotSpawnedMat;
+
+	UPROPERTY()
+	UMaterial* LeftPortalMat;
+
 //private:
 
 	UPROPERTY(VisibleAnywhere)
@@ -94,7 +100,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-	void SetplayerVelocity();
+	void SetPlayerVelocity();
 
 	UFUNCTION()
 	void SetPlayerRotation();

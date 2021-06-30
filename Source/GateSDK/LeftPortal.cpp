@@ -25,6 +25,7 @@ ALeftPortal::ALeftPortal()
 		static ConstructorHelpers::FObjectFinder<UMaterial>PortalMaterial(TEXT("Material'/Game/Materials/RightPortalRT_Mat1.RightPortalRT_Mat1'")); //to display right view on left
 		if (PortalMaterial.Succeeded())
 		{
+			RightPortalMat = PortalMaterial.Object;
 			Plane->SetMaterial(0, PortalMaterial.Object);
 		}	
 	}
@@ -53,6 +54,9 @@ ALeftPortal::ALeftPortal()
 
 	CharacterRef = Cast<AGateSDKCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	static ConstructorHelpers::FObjectFinder<UMaterial>RightPortalNotSpawnMat(TEXT("Material'/Game/Materials/NoRightPortalRTMat.NoRightPortalRTMat'"));
+	if (RightPortalNotSpawnMat.Succeeded())
+		RightPortalNotSpawnedMat = RightPortalNotSpawnMat.Object;
 }
 
 // Called when the game starts or when spawned
@@ -67,9 +71,19 @@ void ALeftPortal::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (CharacterRef->GetRightPortalLocation() != FVector(0.f, 0.f, 0.f))
-		IsSecondPortalSpawned = true;
+	CharacterRef->StoredLeftPortal->SetActorLocation(GetActorLocation());
 
+	if (CharacterRef->GetRightPortalLocation() != FVector(NULL))
+	{
+		Plane->SetMaterial(0, RightPortalMat);
+		IsSecondPortalSpawned = true;
+	}
+	else
+	{
+		Plane->SetMaterial(0, RightPortalNotSpawnedMat);
+		IsSecondPortalSpawned = false;
+	}
+	
 	SetRenderTargetRotation();
 }
 

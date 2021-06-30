@@ -38,6 +38,13 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UArrowComponent* Arrow;
 
+	UPROPERTY()
+	UMaterial* RightPortalNotSpawnedMat;
+
+	UPROPERTY()
+	UMaterial* RightPortalMat;
+
+
 //private:
 
 	UPROPERTY(VisibleAnywhere)

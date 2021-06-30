@@ -268,6 +268,7 @@ void AGateSDKCharacter::DestroyLeftPortal()
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Left Portal Destroyed"));
 		LeftPortalForwardVector = FVector(NULL);
+		LeftPortalLocation = FVector(NULL);
 		GetWorld()->DestroyActor(StoredLeftPortal);
 		bLeftPortalSpawned = false;
 	}
@@ -359,6 +360,7 @@ void AGateSDKCharacter::DestroyRightPortal()
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Right Portal Destroyed"));
 		RightPortalForwardVector = FVector(NULL);
+		RightPortalLocation = FVector(NULL);
 		GetWorld()->DestroyActor(StoredRightPortal);
 		bRightPortalSpawned = false;
 	}
